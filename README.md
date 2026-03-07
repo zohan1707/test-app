@@ -1,118 +1,113 @@
-# Quiz CLI
+# test-app — CLI Quiz
 
-An interactive command-line quiz game written in modern JavaScript (ES Modules). It provides a small, dependency-free example of building a terminal-based quiz app demonstrating Node.js APIs, async/await, classes, and basic CLI input handling.
+A small interactive command-line quiz application located in the test-app/ folder. It runs under Node.js (engine requirement >= 18) and loads question sets from a JSON data file. Intended for quick CLI demos, learning, and small experiments.
 
-## Project Overview
+## Features
+- Interactive CLI quiz experience.
+- Questions are driven by a JSON data file (multiple categories).
+- Zero external dependencies (runs with Node.js built-in APIs).
+- Simple start script: `npm start` → runs `node index.js`.
 
-- Purpose: A simple educational CLI app for testing programming knowledge across multiple categories (JavaScript, Node.js, General Programming).
-- Key features:
-  - Category selection with configurable question counts
-  - Shuffled questions and a visual progress bar
-  - Immediate feedback with explanations
-  - Final score summary and review of incorrect answers
-  - No external dependencies; uses Node.js built-in modules
+## Prerequisites
+- Node.js v18 or newer (the package.json specifies Node engine >=18).
+- Git (to clone the repo), if installing from source.
 
-## Requirements
+Check your Node version:
+```
+node -v
+```
 
-- Node.js >= 18.0.0 (as specified in package.json `engines`)
+## Installation
 
-## Setup Instructions
+1. Clone the repository:
+```
+git clone <repository-url>
+cd <repo-root>
+```
 
-1. Clone the repository and change into the `test-app` directory (project files are under `test-app/`).
+2. Navigate to the app directory:
+```
+cd test-app
+```
 
-   git clone <repo-url>
-   cd <repo-root>/test-app
+3. (Optional) Install dependencies:
+- There are no external dependencies required by this project, so `npm install` is optional. Running it is harmless if you plan to add dependencies later:
+```
+npm install
+```
 
-2. (Optional) Install dependencies. This project has no declared runtime dependencies. If you use npm scripts, run:
+## Running
 
-   npm install
+From the test-app directory you can start the quiz:
 
-3. Run the app:
+- With npm script:
+```
+npm start
+```
 
-   npm start
+- Or directly with Node:
+```
+node index.js
+```
 
-   or directly:
+`npm start` runs `node index.js` (start script in package.json).
 
-   node index.js
+## Usage summary (CLI flow)
+- The app is a CLI quiz that reads questions from `data/questions.json`.
+- On launch it presents an interactive flow (choose category / answer questions / see results).
+- Question sets are grouped into categories; the shipped data includes at least:
+  - javascript
+  - nodejs
+  - general
 
-4. Run tests (note: package.json defines a `test` script as `node --test`, but this repository contains no test files):
+(Exact prompts and flow are implemented in `index.js` — run the app to see the interactive behavior.)
 
-   npm test
+## Project structure
 
-## Usage Examples
+Top-level (important files)
+- test-app/
+  - index.js           — CLI entry point (run with node index.js)
+  - package.json       — project metadata, scripts (start = node index.js), engine >=18
+  - data/
+    - questions.json   — quiz data (question categories and items)
+  - README.md?         — (this file should be placed at repo root)
+  - other files (package-lock.json, etc.) may be present
 
-- Start the app with `npm start` or `node index.js`.
-- Follow the prompts to:
-  1. Choose a category (e.g. "JavaScript Basics").
-  2. Choose how many questions (All / 3 / 5 when available).
-  3. Answer questions by entering the number shown for each option.
-  4. Press Enter to advance between questions and screens.
-  5. At the end, view your score and a review of any incorrect answers.
+Note: The CLI quiz and all runnable logic live in `test-app/`. Treat that as the application root when developing or running.
 
-Example CLI flow (illustrative):
+## Data / questions
+- Questions are stored in `test-app/data/questions.json`.
+- The JSON contains multiple categories (javascript, nodejs, general) and question objects for each category.
+- To add or modify questions, edit that JSON file. Keep the structure consistent with the existing entries.
 
-  $ npm start
-  ╔═══════════════════════════════════════════╗
-  ║                                           ║
-  ║   📚 QUIZ CLI                             ║
-  ║   Test your programming knowledge!       ║
-  ║                                           ║
-  ╚═══════════════════════════════════════════╝
+Suggestions:
+- Validate JSON structure after edits (e.g., with `jq` or a quick Node script) to avoid runtime errors.
+- Consider adding metadata per question (difficulty, id) if you plan to extend features.
 
-  Choose a category:
-    1. JavaScript Basics
-    2. Node.js Fundamentals
-    3. General Programming
+## Development notes
+- The project targets Node.js >=18. Use a matching runtime for ESM and modern APIs.
+- The codebase uses modern Node features; if package.json includes `"type": "module"`, it runs as ESM. If you switch to CommonJS, adjust imports/exports accordingly.
+- There are no external dependencies by default — ideal for fast iteration.
 
-  Your choice (enter number): 1
+## Contributing / clean-up suggestions
+- Add a LICENSE file (none detected). Consider MIT, Apache-2.0, or another license that fits your project goals.
+- Add a CONTRIBUTING.md if you expect external contributors (guidelines, code style, tests).
+- Add simple tests (e.g., data validation tests for questions.json).
+- Clean up repository metadata:
+  - Remove macOS/hidden files (e.g., .DS_Store) and platform-specific temporary files.
+  - Add a .gitignore to exclude OS metadata, node_modules (if dependencies are added), and other local artifacts.
+- Consider improving question editing UX (a small admin CLI) or persisting scores/history.
 
-  How many questions?
-    1. All questions
-    2. 3 questions
-    3. 5 questions
+## License
+No license file detected in the repository. If you plan to publish or accept contributions, add an explicit LICENSE file to make reuse and contribution terms clear.
 
-  Your choice (enter number): 2
+## Contact / Support
+- For issues, feature requests, or questions: open an issue in the repository.
+- When opening issues, include Node version and steps to reproduce if you encounter runtime errors.
 
-  [Progress bar]
-  Question 1 of 3
-    1. var
-    2. let
-    3. const
-    4. define
-  Your choice (enter number): 3
+---
 
-  ✓ Correct!
-
-  Press Enter to continue...
-
-At the end you'll see a results summary with score percentage and optional review of incorrect answers.
-
-## File Structure
-
-test-app/
-- package.json  - npm metadata (name: quiz-cli, version, scripts, license: MIT, engines: node >=18)
-- index.js      - Main entry point and application loop (loads questions, handles menus)
-- data/
-  - questions.json - Quiz content: categories (javascript, nodejs, general) and question objects (question, options, answer index, explanation)
-- src/
-  - input.js     - Lightweight readline-based input utilities (createInterface, prompt, select, confirm, pressEnter)
-  - quiz.js      - Quiz class with game logic (shuffle, askQuestion, progress rendering, showResults)
-  - colors.js    - Small ANSI color helpers for terminal output
-
-Note: There are some macOS metadata files under `__MACOSX/` that can be ignored.
-
-## Additional Details
-
-- License: MIT (as declared in package.json)
-- Project type: ES Modules (package.json has "type": "module")
-- Entry point: `index.js` (executable shebang present)
-- No external dependencies: the app uses Node's built-in `readline`, `fs/promises`, and `path` modules
-- Contribution & issues: This repository does not include a CONTRIBUTING.md file. To report bugs or request features, open an issue in the repository.
-
-## Notes & Known Items
-
-- Tests: `npm test` runs `node --test` per package.json, but there are no test files in the repo.
-- Node version: Use Node 18+ to match the `engines` field and ESM usage.
-
---
-Generated from repository contents. No additional files or behavior were assumed beyond the repository sources.
+If you want, I can:
+- Generate a LICENSE.md (e.g., MIT) and add it to the repo.
+- Add a CONTRIBUTING.md template and a simple .gitignore.
+- Produce a short development checklist (local run, tests, PR template).
